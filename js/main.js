@@ -1,6 +1,7 @@
 'use strict';
 
-var AVATAR_URL = 'img/avatars/user{{xx}}.png';
+var AVATAR_URL = 'img/avatars/user';
+var AVATAR_URL_EXT = '.png';
 var OFFER_TITLES = ['Сдам комнату', 'Сдам квартиру', 'Сдам дом', 'Сдам гараж', 'Сдам помещение под склад'];
 var MIN_PRICE = 1000;
 var MAX_PRICE = 10000;
@@ -21,6 +22,8 @@ var PHOTO_URLS = [
 var LOCATION_X_MIN = 0;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 var mapOverlay = document.querySelector('.map__overlay');
 var pinTemplate = document.querySelector('#pin')
@@ -44,8 +47,8 @@ function renderPins() {
 
 function renderPin(offerData) {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.style.left = offerData.location.x + 'px';
-  pinElement.style.top = offerData.location.y + 'px';
+  pinElement.style.left = offerData.location.x - (PIN_WIDTH / 2) + 'px';
+  pinElement.style.top = offerData.location.y - PIN_HEIGHT + 'px';
   var img = pinElement.querySelector('img');
   img.setAttribute('src', offerData.author.avatar);
   img.setAttribute('alt', offerData.offer.title);
@@ -58,26 +61,26 @@ function showMap() {
 }
 
 function generateOffers() {
-  for (var i = 0; i < 8; i++) {
+  for (var i = 1; i <= 8; i++) {
     offers.push(generateOffer(i));
   }
 }
 
 function generateOffer(index) {
-  var authorAvatarNum = '0' + ++index;
-  var authorAvatarUrl = AVATAR_URL.replace('{{xx}}', authorAvatarNum);
+  var authorAvatarNum = '0' + index;
+  var authorAvatarUrl = AVATAR_URL + authorAvatarNum + AVATAR_URL_EXT;
   var offerTitle = getRandomItem(OFFER_TITLES);
-  var locationX = randomInt(LOCATION_X_MIN, mapOverlay.offsetWidth);
-  var locationY = randomInt(LOCATION_Y_MIN, LOCATION_Y_MAX);
-  var offerPrice = randomInt(MIN_PRICE, MAX_PRICE);
+  var locationX = getRandomInt(LOCATION_X_MIN, mapOverlay.offsetWidth);
+  var locationY = getRandomInt(LOCATION_Y_MIN, LOCATION_Y_MAX);
+  var offerPrice = getRandomInt(MIN_PRICE, MAX_PRICE);
   var offerType = getRandomItem(OFFER_TYPES);
-  var offerRooms = randomInt(ROOMS_MIN, ROOMS_MAX);
-  var offerGuests = randomInt(GUESTS_MIN, GUESTS_MAX);
+  var offerRooms = getRandomInt(ROOMS_MIN, ROOMS_MAX);
+  var offerGuests = getRandomInt(GUESTS_MIN, GUESTS_MAX);
   var offerCheckin = getRandomItem(CHECKINS);
   var offerCheckout = getRandomItem(CHECKOUTS);
-  var offerFeatures = FEATURES.slice(randomInt(0, FEATURES.length - 1));
+  var offerFeatures = FEATURES.slice(getRandomInt(0, FEATURES.length - 1));
   var offerDescription = getRandomItem(DESCRIPTIONS);
-  var offerPhotos = PHOTO_URLS.slice(randomInt(0, PHOTO_URLS.length - 1));
+  var offerPhotos = PHOTO_URLS.slice(getRandomInt(0, PHOTO_URLS.length - 1));
 
   return {
     'author': {
@@ -104,7 +107,7 @@ function generateOffer(index) {
 }
 
 
-function randomInt(min, max) {
+function getRandomInt(min, max) {
   var rand = min + Math.random() * (max - min);
   return Math.round(rand);
 }
