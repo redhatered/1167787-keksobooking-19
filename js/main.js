@@ -48,8 +48,6 @@ switchPageToDisabledState();
 generateOffers();
 setAddress(getMapPinMainCoords());
 validateRoomNumberSelect();
-// showMap();
-// renderPins();
 
 mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
 mapPinMain.addEventListener('keydown', onMapPinMainKeydown);
@@ -101,6 +99,7 @@ function switchPageToActiveState() {
     item.removeAttribute('disabled');
   });
   setAddress(getMapPinMainCoords());
+  renderPins();
 }
 
 function switchPageToDisabledState() {
