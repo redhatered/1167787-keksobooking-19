@@ -24,19 +24,96 @@ var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var LEFT_BTN_MOUSE_CODE = 0;
+var ENTER_KEY = 'Enter';
+var PIN_TAIL_HEIGHT = 22;
 
 var mapOverlay = document.querySelector('.map__overlay');
 var pinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
+var map = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var mapFiltersForm = document.querySelector('.map__filters');
+var mapPinMain = document.querySelector('.map__pin--main');
+var inputAddress = adForm.querySelector('#address');
+var selectRoomNumber = adForm.querySelector('#room_number');
+var selectCapacity = adForm.querySelector('#capacity');
 var fragment = document.createDocumentFragment();
 
 var offers = [];
 
+switchPageToDisabledState();
 generateOffers();
-showMap();
-renderPins();
+setAddress(getMapPinMainCoords());
+validateRoomNumberSelect();
+// showMap();
+// renderPins();
+
+mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
+mapPinMain.addEventListener('keydown', onMapPinMainKeydown);
+selectRoomNumber.addEventListener('change', validateRoomNumberSelect);
+selectCapacity.addEventListener('change', validateRoomNumberSelect);
+
+
+function validateRoomNumberSelect() {
+  if (selectRoomNumber.value < selectCapacity.value) {
+    selectRoomNumber.setCustomValidity('Количество мест, больше чем количество комнат');
+  }
+}
+
+function setAddress(value) {
+  inputAddress.value = value;
+}
+
+function getMapPinMainCoords() {
+  var mapIsNotActive = map.classList.contains('map--faded');
+  var x = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
+  var y = '';
+  if (mapIsNotActive) {
+    y = Math.round(mapPinMain.offsetTop + mapPinMain.offsetHeight / 2);
+  } else {
+    y = Math.round(mapPinMain.offsetTop + mapPinMain.offsetHeight + PIN_TAIL_HEIGHT);
+  }
+  return x + ', ' + y;
+}
+
+function onMapPinMainMousedown(evt) {
+  if (evt.button === LEFT_BTN_MOUSE_CODE) {
+    switchPageToActiveState();
+  }
+}
+
+function onMapPinMainKeydown(evt) {
+  if (evt.key === ENTER_KEY) {
+    switchPageToActiveState();
+  }
+}
+
+function switchPageToActiveState() {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach(function (item) {
+    item.removeAttribute('disabled');
+  });
+  mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
+    item.removeAttribute('disabled');
+  });
+  setAddress(getMapPinMainCoords());
+}
+
+function switchPageToDisabledState() {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+  mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+  setAddress(getMapPinMainCoords());
+}
 
 function renderPins() {
   for (var i = 0; i < offers.length; i++) {
@@ -54,10 +131,6 @@ function renderPin(offerData) {
   img.setAttribute('alt', offerData.offer.title);
 
   return pinElement;
-}
-
-function showMap() {
-  document.querySelector('.map').classList.remove('map--faded');
 }
 
 function generateOffers() {
