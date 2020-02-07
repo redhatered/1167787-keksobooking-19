@@ -49,15 +49,24 @@ generateOffers();
 setAddress(getMapPinMainCoords());
 validateRoomNumberSelect();
 
-mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
-mapPinMain.addEventListener('keydown', onMapPinMainKeydown);
-selectRoomNumber.addEventListener('change', validateRoomNumberSelect);
-selectCapacity.addEventListener('change', validateRoomNumberSelect);
+mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler);
+mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
+selectRoomNumber.addEventListener('change', selectRoomNumberChangeHandler);
+selectCapacity.addEventListener('change', selectCapacityChangeHandler);
 
+function selectRoomNumberChangeHandler() {
+  validateRoomNumberSelect();
+}
+
+function selectCapacityChangeHandler() {
+  validateRoomNumberSelect();
+}
 
 function validateRoomNumberSelect() {
-  if (selectRoomNumber.value < selectCapacity.value) {
-    selectRoomNumber.setCustomValidity('Количество мест, больше чем количество комнат');
+  if (parseInt(selectRoomNumber.value, 10) < parseInt(selectCapacity.value, 10)) {
+    selectCapacity.setCustomValidity('Количество мест, больше чем количество комнат');
+  } else {
+    selectCapacity.setCustomValidity('');
   }
 }
 
@@ -77,13 +86,13 @@ function getMapPinMainCoords() {
   return x + ', ' + y;
 }
 
-function onMapPinMainMousedown(evt) {
+function mapPinMainMousedownHandler(evt) {
   if (evt.button === LEFT_BTN_MOUSE_CODE) {
     switchPageToActiveState();
   }
 }
 
-function onMapPinMainKeydown(evt) {
+function mapPinMainKeydownHandler(evt) {
   if (evt.key === ENTER_KEY) {
     switchPageToActiveState();
   }
