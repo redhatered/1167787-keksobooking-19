@@ -1,51 +1,41 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var mapFiltersForm = document.querySelector('.map__filters');
-  var offers = window.data.generateOffers();
+  var PIN_TAIL_HEIGHT = 22;
 
-  switchPageToDisabledState();
+  var map = document.querySelector('.map');
+  var mapPinMain = document.querySelector('.map__pin--main');
+
+  window.form.setAddress(getMapPinMainCoords());
 
   mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler);
   mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
 
   function mapPinMainMousedownHandler(evt) {
     if (evt.button === window.utils.LEFT_BTN_MOUSE_CODE) {
-      switchPageToActiveState();
+      window.page.switchPageToActiveState();
     }
   }
 
   function mapPinMainKeydownHandler(evt) {
     if (evt.key === window.utils.ENTER_KEY) {
-      switchPageToActiveState();
+      window.page.switchPageToActiveState();
     }
   }
 
-  function switchPageToActiveState() {
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    adForm.querySelectorAll('fieldset').forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    window.form.setAddress(window.form.getMapPinMainCoords());
-    window.pin.renderPins(offers);
+  function getMapPinMainCoords() {
+    var mapIsNotActive = map.classList.contains('map--faded');
+    var x = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
+    var y = '';
+    if (mapIsNotActive) {
+      y = Math.round(mapPinMain.offsetTop + mapPinMain.offsetHeight / 2);
+    } else {
+      y = Math.round(mapPinMain.offsetTop + mapPinMain.offsetHeight + PIN_TAIL_HEIGHT);
+    }
+    return x + ', ' + y;
   }
 
-  function switchPageToDisabledState() {
-    map.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-    adForm.querySelectorAll('fieldset').forEach(function (item) {
-      item.setAttribute('disabled', 'disabled');
-    });
-    mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
-      item.setAttribute('disabled', 'disabled');
-    });
-    window.form.setAddress(window.form.getMapPinMainCoords());
-  }
+  window.map = {
+    getMapPinMainCoords: getMapPinMainCoords,
+  };
 })();
