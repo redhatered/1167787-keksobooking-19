@@ -2,21 +2,20 @@
 
 (function () {
   var LEFT_BTN_MOUSE_CODE = 0;
-  var ENTER_KEY = 'Enter';
+  var Key = {
+    ESC: 'Escape',
+    ENTER: 'Enter'
+  };
 
-  function getRandomInt(min, max) {
-    var rand = min + Math.random() * (max - min);
-    return Math.round(rand);
-  }
-
-  function getRandomItem(itemsArr) {
-    return itemsArr[Math.floor(Math.random() * itemsArr.length)];
+  function isEscEvent(evt, callback) {
+    if (evt.key === Key.ESC) {
+      callback();
+    }
   }
 
   window.utils = {
-    getRandomInt: getRandomInt,
-    getRandomItem: getRandomItem,
-    ENTER_KEY: ENTER_KEY,
     LEFT_BTN_MOUSE_CODE: LEFT_BTN_MOUSE_CODE,
+    Key: Key,
+    isEscEvent: isEscEvent,
   };
 })();

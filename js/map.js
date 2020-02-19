@@ -18,7 +18,7 @@
   }
 
   function mapPinMainKeydownHandler(evt) {
-    if (evt.key === window.utils.ENTER_KEY) {
+    if (evt.key === window.utils.Key.ENTER) {
       window.page.switchPageToActiveState();
     }
   }
@@ -36,6 +36,7 @@
   }
 
   window.map = {
+    map: map,
     getMapPinMainCoords: getMapPinMainCoords,
   };
 })();

@@ -32,6 +32,7 @@
   }
 
   window.form = {
+    adForm: adForm,
     setAddress: setAddress,
   };
 })();
