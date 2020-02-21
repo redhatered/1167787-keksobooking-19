@@ -12,13 +12,13 @@
   mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
 
   function mapPinMainMousedownHandler(evt) {
-    if (evt.button === window.utils.LEFT_BTN_MOUSE_CODE) {
+    if (map.classList.contains('map--faded') && evt.button === window.utils.LEFT_BTN_MOUSE_CODE) {
       window.page.switchPageToActiveState();
     }
   }
 
   function mapPinMainKeydownHandler(evt) {
-    if (evt.key === window.utils.Key.ENTER) {
+    if (map.classList.contains('map--faded') && evt.key === window.utils.Key.ENTER) {
       window.page.switchPageToActiveState();
     }
   }

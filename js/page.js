@@ -40,5 +40,6 @@
 
   window.page = {
     switchPageToActiveState: switchPageToActiveState,
+    switchPageToDisabledState: switchPageToDisabledState,
   };
 })();
