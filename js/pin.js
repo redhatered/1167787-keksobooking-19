@@ -14,7 +14,9 @@
 
   function renderPins(offers) {
     for (var i = 0; i < offers.length; i++) {
-      fragment.appendChild(renderPin(offers[i]));
+      if (offers[i].offer) {
+        fragment.appendChild(renderPin(offers[i]));
+      }
     }
     mapPins.appendChild(fragment);
   }
