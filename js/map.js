@@ -12,13 +12,13 @@
   mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
 
   function mapPinMainMousedownHandler(evt) {
-    if (map.classList.contains('map--faded') && evt.button === window.utils.LEFT_BTN_MOUSE_CODE) {
+    if (evt.button === window.utils.LEFT_BTN_MOUSE_CODE) {
       window.page.switchPageToActiveState();
     }
   }
 
   function mapPinMainKeydownHandler(evt) {
-    if (map.classList.contains('map--faded') && evt.key === window.utils.Key.ENTER) {
+    if (evt.key === window.utils.Key.ENTER) {
       window.page.switchPageToActiveState();
     }
   }
@@ -37,6 +37,9 @@
 
   window.map = {
     map: map,
+    mapPinMain: mapPinMain,
     getMapPinMainCoords: getMapPinMainCoords,
+    mapPinMainMousedownHandler: mapPinMainMousedownHandler,
+    mapPinMainKeydownHandler: mapPinMainKeydownHandler,
   };
 })();

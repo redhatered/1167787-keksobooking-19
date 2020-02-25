@@ -16,6 +16,8 @@
     });
     window.form.setAddress(window.map.getMapPinMainCoords());
     window.backend.load(loadHandler, errorHandler);
+    window.map.mapPinMain.removeEventListener('mousedown', window.map.mapPinMainMousedownHandler);
+    window.map.mapPinMain.removeEventListener('keydown', window.map.mapPinMainKeydownHandler);
   }
 
   function errorHandler(messageError) {
@@ -36,6 +38,8 @@
       item.setAttribute('disabled', 'disabled');
     });
     window.form.setAddress(window.map.getMapPinMainCoords());
+    window.map.mapPinMain.addEventListener('mousedown', window.map.mapPinMainMousedownHandler);
+    window.map.mapPinMain.addEventListener('keydown', window.map.mapPinMainKeydownHandler);
   }
 
   window.page = {
