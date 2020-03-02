@@ -11,14 +11,24 @@
     .querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
+  var renderedPins = [];
 
-  function renderPins(offers) {
-    for (var i = 0; i < offers.length; i++) {
-      if (offers[i].offer) {
-        fragment.appendChild(renderPin(offers[i]));
-      }
-    }
+  function renderPins(offers, limit) {
+    offers.slice(0, limit).forEach(function (offerData) {
+      var renderedPin = renderPin(offerData);
+      fragment.appendChild(renderedPin);
+      renderedPins.push(renderedPin);
+    });
     mapPins.appendChild(fragment);
+  }
+
+  function removePins() {
+    if (renderedPins) {
+      renderedPins.forEach(function (pin) {
+        mapPins.removeChild(pin);
+      });
+    }
+    renderedPins = [];
   }
 
   function renderPin(offerData) {
@@ -34,5 +44,6 @@
 
   window.pin = {
     renderPins: renderPins,
+    removePins: removePins,
   };
 })();

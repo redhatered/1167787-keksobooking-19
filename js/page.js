@@ -1,17 +1,12 @@
 'use strict';
 
 (function () {
-  var mapFiltersForm = document.querySelector('.map__filters');
-
   switchPageToDisabledState();
 
   function switchPageToActiveState() {
     window.map.map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     window.form.adForm.querySelectorAll('fieldset').forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
       item.removeAttribute('disabled');
     });
     window.form.setAddress(window.map.getMapPinMainCoords());
@@ -25,7 +20,7 @@
   }
 
   function loadHandler(offers) {
-    window.pin.renderPins(offers);
+    window.filter.activate(offers);
   }
 
   function switchPageToDisabledState() {
@@ -34,9 +29,7 @@
     window.form.adForm.querySelectorAll('fieldset').forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
     });
-    mapFiltersForm.querySelectorAll('fieldset, select').forEach(function (item) {
-      item.setAttribute('disabled', 'disabled');
-    });
+    window.filter.disable();
     window.form.setAddress(window.map.getMapPinMainCoords());
     window.map.mapPinMain.addEventListener('mousedown', window.map.mapPinMainMousedownHandler);
     window.map.mapPinMain.addEventListener('keydown', window.map.mapPinMainKeydownHandler);
