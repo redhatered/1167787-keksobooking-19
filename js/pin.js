@@ -29,6 +29,9 @@
     img.setAttribute('src', offerData.author.avatar);
     img.setAttribute('alt', offerData.offer.title);
 
+    pinElement.addEventListener('click', function () {
+      window.card.render(offerData);
+    });
     return pinElement;
   }
 
