@@ -13,8 +13,8 @@
   var fragment = document.createDocumentFragment();
   var renderedPins = [];
 
-  function renderPins(offers, limit) {
-    offers.slice(0, limit).forEach(function (offerData) {
+  function renderPins(offers) {
+    offers.forEach(function (offerData) {
       var renderedPin = renderPin(offerData);
       fragment.appendChild(renderedPin);
       renderedPins.push(renderedPin);
