@@ -22,6 +22,15 @@
     mapPins.appendChild(fragment);
   }
 
+  function removePins() {
+    if (renderedPins) {
+      renderedPins.forEach(function (pin) {
+        mapPins.removeChild(pin);
+      });
+    }
+    renderedPins = [];
+  }
+
   function renderPin(offerData) {
     var pinElement = pinTemplate.cloneNode(true);
     pinElement.style.left = offerData.location.x - (Pin.WIDTH / 2) + 'px';
