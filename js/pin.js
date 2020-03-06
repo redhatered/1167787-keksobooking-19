@@ -11,13 +11,14 @@
     .querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
+  var renderedPins = [];
 
   function renderPins(offers) {
-    for (var i = 0; i < offers.length; i++) {
-      if (offers[i].offer) {
-        fragment.appendChild(renderPin(offers[i]));
-      }
-    }
+    offers.forEach(function (offerData) {
+      var renderedPin = renderPin(offerData);
+      fragment.appendChild(renderedPin);
+      renderedPins.push(renderedPin);
+    });
     mapPins.appendChild(fragment);
   }
 
@@ -30,12 +31,30 @@
     img.setAttribute('alt', offerData.offer.title);
 
     pinElement.addEventListener('click', function () {
-      window.card.render(offerData);
+      window.card.render(offerData, pinElement);
+      setActiveState(pinElement);
     });
     return pinElement;
   }
 
+  function removePins() {
+    if (renderedPins) {
+      renderedPins.forEach(function (pin) {
+        mapPins.removeChild(pin);
+      });
+    }
+    renderedPins = [];
+  }
+
+  function setActiveState(activePin) {
+    renderedPins.map(function (pin) {
+      pin.classList.remove('map__pin--active');
+    });
+    activePin.classList.add('map__pin--active');
+  }
+
   window.pin = {
     renderPins: renderPins,
+    removePins: removePins,
   };
 })();

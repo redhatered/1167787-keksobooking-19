@@ -9,14 +9,16 @@
 
     if (messageClass) {
       var messageBlock = popupElement.querySelector(messageClass);
-      messageBlock.textContent = message;
-
+      if (message) {
+        messageBlock.textContent = message;
+      }
       popupElement.addEventListener('click', popupClickHandler);
     }
     if (btnClass) {
       var btn = popupElement.querySelector(btnClass);
-      btn.textContent = btnText;
-
+      if (btnText) {
+        btn.textContent = btnText;
+      }
       btn.addEventListener('click', btnClickHandler);
     }
 
@@ -54,11 +56,25 @@
     render(message, btnText, '#error', '.error', '.error__message', '.error__button', errorCallback);
   }
 
+  function renderErrorAfterSubmitForm(message, btnText) {
+    render(message, btnText, '#error', '.error', '.error__message', '.error__button');
+  }
+
+  function renderSuccessAfterSubmitForm(message, btnText) {
+    render(message, btnText, '#success', '.success', '.success__message', null, successCallback);
+  }
+
+  function successCallback() {
+    window.page.switchPageToDisabledState();
+  }
+
   function errorCallback() {
     window.page.switchPageToDisabledState();
   }
 
   window.popup = {
     renderError: renderError,
+    renderErrorAfterSubmitForm: renderErrorAfterSubmitForm,
+    renderSuccessAfterSubmitForm: renderSuccessAfterSubmitForm,
   };
 })();

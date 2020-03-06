@@ -12,12 +12,14 @@
     'palace': 'Дворец',
   };
   var currentCard = null;
+  var currentPin = null;
 
   var cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
-  function render(offerData) {
+  function render(offerData, pinElement) {
+    currentPin = pinElement;
     close();
     currentCard = cardTemplate.cloneNode(true);
     var filter = document.querySelector('.map__filters-container');
@@ -57,6 +59,7 @@
     if (currentCard !== null) {
       window.map.map.removeChild(currentCard);
       currentCard = null;
+      currentPin.classList.remove('map__pin--active');
       document.removeEventListener('keydown', keydownHandler);
     }
   }

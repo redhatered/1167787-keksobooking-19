@@ -17,15 +17,36 @@
   var price = adForm.querySelector('#price');
   var timein = adForm.querySelector('#timein');
   var timeout = adForm.querySelector('#timeout');
+  var resetBtn = adForm.querySelector('.ad-form__reset');
 
   validateRoomNumberSelect();
   setMinPrice();
 
+  adForm.addEventListener('submit', formSubmitHandler);
   selectRoomNumber.addEventListener('change', selectRoomNumberChangeHandler);
   selectCapacity.addEventListener('change', selectCapacityChangeHandler);
   type.addEventListener('change', selectTypeChangeHandler);
   timein.addEventListener('change', selectTimeinChangeHandler);
   timeout.addEventListener('change', selectTimeoutChangeHandler);
+  resetBtn.addEventListener('click', clickResetBtnHandler);
+
+  function clickResetBtnHandler(evt) {
+    evt.preventDefault();
+    window.page.switchPageToDisabledState();
+  }
+
+  function formSubmitHandler(evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm), loadHandler, errorHandler);
+  }
+
+  function errorHandler(messageError) {
+    window.popup.renderErrorAfterSubmitForm(messageError);
+  }
+
+  function loadHandler() {
+    window.popup.renderSuccessAfterSubmitForm();
+  }
 
   function selectRoomNumberChangeHandler() {
     validateRoomNumberSelect();
