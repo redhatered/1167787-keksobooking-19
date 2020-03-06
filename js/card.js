@@ -104,8 +104,8 @@
 
   function fillPhotosType(element, photos) {
     var tempPhoto = element.children[0];
-    element.innerHTML = '';
     var photosFragment = document.createDocumentFragment();
+    element.innerHTML = '';
     photos.forEach(function (item, index) {
       var elementPhoto = tempPhoto.cloneNode(true);
       elementPhoto.src = photos[index];
@@ -123,8 +123,8 @@
   }
 
   function fillFeaturesType(element, dataToFill) {
-    element.innerHTML = '';
     var fragmentFeatures = document.createDocumentFragment();
+    element.innerHTML = '';
     dataToFill.forEach(function (item) {
       var featureElement = document.createElement('li');
       featureElement.classList.add('popup__feature', 'popup__feature--' + item);

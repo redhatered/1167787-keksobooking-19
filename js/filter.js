@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var LIMIT = 5;
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
   var housingPrice = filterForm.querySelector('#housing-price');
@@ -9,7 +10,6 @@
   var housingFeatures = filterForm.querySelector('#housing-features');
   var dataToFilter = [];
   var filteredData = [];
-  var LIMIT = 5;
   var filterPriceMap = {
     'low': {
       MIN: 0,
@@ -25,7 +25,7 @@
     },
   };
 
-  function changeFilterFormHandler() {
+  function doFiltering() {
     filteredData = [];
     for (var i = 0; i < dataToFilter.length; i++) {
       if (dataToFilter[i].offer
@@ -72,8 +72,8 @@
 
   function activate(data) {
     dataToFilter = data.slice();
-    changeFilterFormHandler();
-    filterForm.addEventListener('change', changeFilterFormHandler);
+    doFiltering();
+    filterForm.addEventListener('change', window.filter.changeFilterFormHandler);
     filterForm.querySelectorAll('fieldset, select').forEach(function (item) {
       item.removeAttribute('disabled');
     });
@@ -84,11 +84,12 @@
     filterForm.querySelectorAll('fieldset, select').forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
     });
-    filterForm.removeEventListener('change', changeFilterFormHandler);
+    filterForm.removeEventListener('change', window.filter.changeFilterFormHandler);
   }
 
   window.filter = {
     activate: activate,
     disable: disable,
+    changeFilterFormHandler: window.debounce(doFiltering),
   };
 })();
