@@ -14,6 +14,7 @@
   var renderedPins = [];
 
   function renderPins(offers) {
+    window.card.close();
     offers.forEach(function (offerData) {
       var renderedPin = renderPin(offerData);
       fragment.appendChild(renderedPin);
@@ -33,13 +34,24 @@
 
   function renderPin(offerData) {
     var pinElement = pinTemplate.cloneNode(true);
+    var img = pinElement.querySelector('img');
     pinElement.style.left = offerData.location.x - (Pin.WIDTH / 2) + 'px';
     pinElement.style.top = offerData.location.y - Pin.HEIGHT + 'px';
-    var img = pinElement.querySelector('img');
     img.setAttribute('src', offerData.author.avatar);
     img.setAttribute('alt', offerData.offer.title);
 
+    pinElement.addEventListener('click', function () {
+      window.card.render(offerData, pinElement);
+      setActiveState(pinElement);
+    });
     return pinElement;
+  }
+
+  function setActiveState(activePin) {
+    renderedPins.map(function (pin) {
+      pin.classList.remove('map__pin--active');
+    });
+    activePin.classList.add('map__pin--active');
   }
 
   window.pin = {

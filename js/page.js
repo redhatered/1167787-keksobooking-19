@@ -13,6 +13,7 @@
     window.backend.load(loadHandler, errorHandler);
     window.map.mapPinMain.removeEventListener('mousedown', window.map.mapPinMainMousedownHandler);
     window.map.mapPinMain.removeEventListener('keydown', window.map.mapPinMainKeydownHandler);
+    window.map.mapPinMain.addEventListener('mousedown', window.map.mapPinMainMousedownForDragHandler);
   }
 
   function errorHandler(messageError) {
@@ -29,10 +30,15 @@
     window.form.adForm.querySelectorAll('fieldset').forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
     });
+    window.form.adForm.reset();
+    window.pin.removePins();
+    window.map.setMainPinDefaultCoords();
+    window.card.close();
     window.filter.disable();
     window.form.setAddress(window.map.getMapPinMainCoords());
     window.map.mapPinMain.addEventListener('mousedown', window.map.mapPinMainMousedownHandler);
     window.map.mapPinMain.addEventListener('keydown', window.map.mapPinMainKeydownHandler);
+    window.map.mapPinMain.removeEventListener('mousedown', window.map.mapPinMainMousedownForDragHandler);
   }
 
   window.page = {

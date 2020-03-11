@@ -38,8 +38,17 @@
     xhr.send();
   }
 
+  function save(data, onLoad, onError) {
+    var xhr = initXhr(onLoad, onError);
+
+    xhr.open('POST', BASE_URL);
+    xhr.send(data);
+  }
+
+
   window.backend = {
     load: load,
+    save: save,
   };
 })();
 
